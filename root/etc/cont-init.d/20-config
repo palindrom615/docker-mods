@@ -1,0 +1,23 @@
+#!/usr/bin/with-contenv bash
+
+# make folders
+mkdir -p \
+	/config
+
+# copy config
+[[ ! -f /config/cupsd.conf ]] && cp \
+	/defaults/cupsd.conf /config/cupsd.conf
+[[ ! -f /config/cups-files.conf ]] && cp \
+	/defaults/cups-files.conf /config/cups-files.conf
+
+adduser -D ${CUPS_ADMIN:-cupsadmin}
+echo "${CUPS_ADMIN:-cupsadmin}:${CUPS_ADMIN_PW:-cupsadmin}" | chpasswd
+# passwd -l cupsadmin
+addgroup ${CUPS_ADMIN:-cupsadmin} lpadmin
+
+# permissions
+chown -R abc:abc \
+	/config \
+	/var/cache/cups \
+	/var/spool/cups \
+	/run/cups

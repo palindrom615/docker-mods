@@ -1,6 +1,19 @@
-FROM scratch
+FROM  ghcr.io/linuxserver/baseimage-alpine:3.13
 
-LABEL maintainer="username"
+ARG BUILD_DATE
+ARG VERSION
+LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
 
-# copy local files
+RUN \
+    apk add --no-cache \
+      --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/ \
+      cups\
+      cups-pdf \
+      cups-filters \
+      hplip \
+      gutenprint
+
 COPY root/ /
+
+EXPOSE 631
+VOLUME /config /var/run/dbus
