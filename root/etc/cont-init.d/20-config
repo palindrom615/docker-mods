@@ -10,10 +10,7 @@ mkdir -p \
 [[ ! -f /config/cups-files.conf ]] && cp \
 	/defaults/cups-files.conf /config/cups-files.conf
 
-adduser -D ${CUPS_ADMIN:-cupsadmin}
-echo "${CUPS_ADMIN:-cupsadmin}:${CUPS_ADMIN_PW:-cupsadmin}" | chpasswd
-# passwd -l cupsadmin
-addgroup ${CUPS_ADMIN:-cupsadmin} lpadmin
+useradd -p $(openssl passwd -1 ${CUPS_ADMIN_PW:-cupsadmin}) -G lpadmin ${CUPS_ADMIN:-cupsadmin}
 
 # permissions
 chown -R abc:abc \
