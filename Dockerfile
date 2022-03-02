@@ -11,7 +11,9 @@ RUN \
       cups-pdf \
       cups-filters \
       hplip \
-      gutenprint
+      gutenprint \
+    && usermod -aG shadow abc
+
 
 COPY root/ /
 
